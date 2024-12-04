@@ -9,4 +9,4 @@ I started in 2023 and will try to do them every year from now. I will probaly mo
 | Year | Stars |
 |------|-------|
 | 2023 | 50    |
-| 2024 | 4     |
+| 2024 | 8     |
