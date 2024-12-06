@@ -32,19 +32,19 @@ if __name__ == '__main__':
         if grid[ahead_a][ahead_b] == '.':
             grid[ahead_a][ahead_b] = '#'
 
-            loc_rotation_path = set()
-
             temp_a, temp_b, temp_direction = a, b, direction[:]
+
+            path = set()
 
             while 0 <= temp_a < len(grid) and 0 <= temp_b < len(grid[0]):
                 while look_ahead(grid, [temp_a + temp_direction[0], temp_b + temp_direction[1]]) == '#':
-                    seen_location_set = (temp_a, temp_b, temp_direction[0], temp_direction[1])
+                    seen = (temp_a, temp_b, temp_direction[0], temp_direction[1])
 
-                    if seen_location_set in loc_rotation_path:
+                    if seen in path:
                         count += 1
                         break
 
-                    loc_rotation_path.add(seen_location_set)
+                    path.add(seen)
                     rotate_right(temp_direction)
                 else:
                     temp_a += temp_direction[0]
