@@ -1,7 +1,7 @@
 import os
 
-with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as file:
-    data = file.read().strip()
+with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
+    data = f.read().strip()
 
 even = []
 odd = []
