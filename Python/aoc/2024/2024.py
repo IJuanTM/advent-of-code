@@ -33,12 +33,18 @@ expected_outputs = {
     "dec13/2.py": "95273925552482",
     "dec14/1.py": "231019008",
     "dec14/2.py": "8280",
+    "dec15/1.py": "1415498",
+    "dec15/2.py": "1432898",
+    "dec16/1.py": "94436",
+    "dec16/2.py": "481",
+    "dec17/1.py": "3,1,4,3,1,7,1,6,3",
+    "dec17/2.py": "37221270076916",
 }
 
 
 def spinner(stop_event):
     while not stop_event.is_set():
-        for frame in "-\\|/":
+        for frame in "|/-\\":
             print(f"\r{frame}", end="", flush=True)
             time.sleep(0.1)
 
@@ -93,10 +99,10 @@ def run_file(path):
         print(f"\nError running {path}: {e}")
 
 
-skip = False
+skip = True
 
 to_skip = [
-
+    "dec7/2.py",
 ]
 
 for i in range(1, 25):
