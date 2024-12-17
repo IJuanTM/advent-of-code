@@ -60,7 +60,7 @@ expected_outputs = {
 
 def spinner(stop_event):
     while not stop_event.is_set():
-        for frame in "-\\|/":
+        for frame in "|/-\\":
             print(f"\r{frame}", end="", flush=True)
             time.sleep(0.1)
 
