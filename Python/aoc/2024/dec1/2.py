@@ -3,7 +3,7 @@ from collections import Counter
 
 # read the input file
 with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
-    lines = f.read().splitlines()
+    lines = f.readlines()
 
 # ---------------------------------------------------------------- #
 
@@ -14,4 +14,4 @@ for line in lines:
     left_list.append(left)
     right_list.append(right)
 
-print(sum(left * Counter(right_list)[left] for left in left_list))
+print(sum(left * Counter(right_list)[left] for left in left_list))  # 22539317

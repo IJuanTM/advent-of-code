@@ -2,7 +2,7 @@ import os
 
 # read the input file
 with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
-    lines = f.read().splitlines()
+    lines = f.readlines()
 
 # ---------------------------------------------------------------- #
 
@@ -18,4 +18,4 @@ left_list.sort()
 right_list.sort()
 
 # calculate and print the total distance
-print(sum(abs(left - right) for left, right in zip(left_list, right_list)))
+print(sum(abs(left - right) for left, right in zip(left_list, right_list)))  # 1941353

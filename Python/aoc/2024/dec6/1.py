@@ -2,7 +2,7 @@ import os
 
 # Read input data
 with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
-    grid = [list(line) for line in f.read().strip().splitlines()]
+    grid = [list(line) for line in f.readlines()]
 
 a, b = next([i, j] for i, row in enumerate(grid) for j, cell in enumerate(row) if cell == '^')
 direction = [-1, 0]
@@ -27,4 +27,4 @@ while 0 <= a < len(grid) and 0 <= b < len(grid[0]):
     b += direction[1]
 
 # Print result
-print(count)
+print(count)  # 4789

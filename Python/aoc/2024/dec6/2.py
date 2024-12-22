@@ -13,7 +13,7 @@ def rotate_right(direction: List[int]):
 
 if __name__ == '__main__':
     with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
-        grid = [list(line) for line in f.read().strip().splitlines()]
+        grid = [list(line) for line in f.readlines()]
 
     a, b = next((i, j) for i, row in enumerate(grid) for j, val in enumerate(row) if val == '^')
     direction = [-1, 0]
@@ -57,4 +57,4 @@ if __name__ == '__main__':
         a += direction[0]
         b += direction[1]
 
-    print(count)
+    print(count)  # 1304
