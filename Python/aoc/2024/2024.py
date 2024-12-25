@@ -1,7 +1,8 @@
 import shutil
 import subprocess
-import threading
 import time
+
+from halo import Halo
 
 # define expected outputs for each file
 expected_outputs = {
@@ -49,24 +50,19 @@ expected_outputs = {
     "dec21/2.py": "130470079151124",
     "dec22/1.py": "12979353889",
     "dec22/2.py": "1449",
+    "dec23/1.py": "1227",
+    "dec23/2.py": "cl,df,ft,ir,iy,ny,qp,rb,sh,sl,sw,wm,wy",
+    "dec24/1.py": "41324968993486",
+    "dec24/2.py": "bmn,jss,mvb,rds,wss,z08,z18,z23",
+    "dec25/1.py": "3344",
 }
 
 
-def spinner(stop_event):
-    while not stop_event.is_set():
-        for frame in "|/-\\":
-            print(f"\r{frame}", end="", flush=True)
-            time.sleep(0.1)
-
-    print("\r", end="", flush=True)
-
-
 def run_file(path):
-    stop_event = threading.Event()
-
-    threading.Thread(target=spinner, args=(stop_event,), daemon=True).start()
-
     start_time = time.time()
+
+    spinner = Halo(text=f'Running {path}', spinner='dots')
+    spinner.start()
 
     try:
         result = subprocess.run(
@@ -77,57 +73,45 @@ def run_file(path):
             text=True
         )
 
-        stop_event.set()
-
         elapsed_time = time.time() - start_time
-
         output = result.stdout.strip()
 
         if result.stderr:
             output += f"\nError output:\n{result.stderr.strip()}"
 
-        # Format the output
-        formatted_output = f"{output:<{shutil.get_terminal_size().columns - 20}}{elapsed_time:.3f}s"
-
-        # Check if expected output exists and compare
         expected_output = expected_outputs.get(path)
-        if expected_output:
-            try:
-                assert output == expected_output, f"Output does not match for {path}"
-                result_status = "Correct!"
-            except AssertionError:
-                result_status = "Incorrect!"
+        if expected_output and output != expected_output:
+            spinner.fail(f"Wanted {expected_output}, got {output}")
         else:
-            result_status = "Incorrect!"
-
-        print(f"\r{formatted_output} {result_status}", end="", flush=True)
-        print()
+            spinner.succeed(f"{output:<{shutil.get_terminal_size().columns - 20}}{elapsed_time:.3f}s")
 
     except subprocess.CalledProcessError as e:
-        stop_event.set()
-
-        print(f"\nError running {path}: {e}")
+        spinner.fail(f"Error running {path}: {e}")
 
 
 skip = True
 
+# define files to skip (for example, if they take too long to run)
 to_skip = [
     "dec7/2.py",
+    "dec25/2.py",  # only one part
 ]
 
-for i in range(1, 25):
-    print(f"{i}:")
+for i in range(1, 26):
+    print(f"dec{i}:")
 
     for part in ("1", "2"):
-        if f"dec{i}/{part}.py" not in expected_outputs:
-            print(f"Skipping...")
+        file_path = f"dec{i}/{part}.py"
+
+        if file_path not in expected_outputs:
+            print(f"Skipping {file_path}... (no expected output)")
             continue
 
-        if skip and f"dec{i}/{part}.py" in to_skip:
-            print(f"Skipping...")
+        if skip and file_path in to_skip:
+            print(f"Skipping {file_path}...")
             continue
 
-        run_file(f"dec{i}/{part}.py")
+        run_file(file_path)
 
-    if i < 24:
+    if i < 25:
         print()
