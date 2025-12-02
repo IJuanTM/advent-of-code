@@ -8,6 +8,8 @@ from halo import Halo
 expected_outputs = {
     "dec1/1.py": "1026",
     "dec1/2.py": "5923",
+    "dec2/1.py": "30599400849",
+    "dec2/2.py": "46270373595",
 }
 
 
