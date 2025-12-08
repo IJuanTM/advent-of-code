@@ -1,33 +1,12 @@
-import shutil
 import subprocess
 import time
+from pathlib import Path
 
 from halo import Halo
-
-# define expected outputs for each file
-expected_outputs = {
-    "dec1/1.py": "1026",
-    "dec1/2.py": "5923",
-    "dec2/1.py": "30599400849",
-    "dec2/2.py": "46270373595",
-    "dec3/1.py": "17435",
-    "dec3/2.py": "172886048065379",
-    "dec4/1.py": "1489",
-    "dec4/2.py": "8890",
-    "dec5/1.py": "888",
-    "dec5/2.py": "344378119285354",
-    "dec6/1.py": "4309240495780",
-    "dec6/2.py": "9170286552289",
-    "dec7/1.py": "1662",
-    "dec7/2.py": "40941112789504",
-    "dec8/1.py": "46398",
-    "dec8/2.py": "8141888143",
-}
 
 
 def run_file(path):
     start_time = time.time()
-
     spinner = Halo(text=f'Running {path}', spinner='dots')
     spinner.start()
 
@@ -43,41 +22,33 @@ def run_file(path):
         elapsed_time = time.time() - start_time
         output = result.stdout.strip()
 
-        if result.stderr:
-            output += f"\nError output:\n{result.stderr.strip()}"
+        parts = output.split(',')
+        day_num = path.split('/')[0].replace('dec', '') if '/' in path else path.split('\\')[0].replace('dec', '')
 
-        expected_output = expected_outputs.get(path)
-        if expected_output and output != expected_output:
-            spinner.fail(f"Wanted {expected_output}, got {output}")
-        else:
-            spinner.succeed(f"{output:<{shutil.get_terminal_size().columns - 20}}{elapsed_time:.3f}s")
+        part1_str = f"Part 1: {parts[0]}" if len(parts) > 0 else ""
+        part2_str = f"Part 2: {parts[1]}" if len(parts) > 1 else ""
+
+        spinner.succeed(f"Dec {day_num:<8} {part1_str:<32} {part2_str:<32} {elapsed_time:.3f}s")
 
     except subprocess.CalledProcessError as e:
-        spinner.fail(f"Error running {path}: {e}")
+        elapsed_time = time.time() - start_time
+        spinner.fail(f"{elapsed_time:.3f}s")
+        if e.stderr:
+            print(e.stderr.strip())
 
 
-skip = True
+to_skip = []
 
-# define files to skip (for example, if they take too long to run)
-to_skip = [
+dec_folders = sorted([d for d in Path('.').iterdir() if d.is_dir() and d.name.startswith('dec')])
 
-]
+for folder in dec_folders:
+    file_path = folder / f"{folder.name}.py"
 
-for i in range(1, 11):
-    print(f"dec{i}:")
+    if not file_path.exists():
+        continue
 
-    for part in ("1", "2"):
-        file_path = f"dec{i}/{part}.py"
+    if str(file_path) in to_skip:
+        print(f"Skipping {file_path}...")
+        continue
 
-        if file_path not in expected_outputs:
-            print(f"Skipping {file_path}... (no expected output)")
-            continue
-
-        if skip and file_path in to_skip:
-            print(f"Skipping {file_path}...")
-            continue
-
-        run_file(file_path)
-
-    if i < 11:
-        print()
+    run_file(str(file_path))
