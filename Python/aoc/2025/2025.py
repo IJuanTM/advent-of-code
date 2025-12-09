@@ -39,7 +39,7 @@ def run_file(path):
 
 to_skip = []
 
-dec_folders = sorted([d for d in Path('.').iterdir() if d.is_dir() and d.name.startswith('dec')])
+dec_folders = sorted([d for d in Path('.').iterdir() if d.is_dir() and d.name.startswith('dec')], key=lambda x: int(x.name.replace('dec', '')))
 
 for folder in dec_folders:
     file_path = folder / f"{folder.name}.py"
