@@ -1,10 +1,10 @@
-def part_1(lines):
-    A = int(lines[0].split(": ")[1])
-    B = int(lines[1].split(": ")[1])
-    C = int(lines[2].split(": ")[1])
+def part_1():
+    a = int(lines[0].split(": ")[1])
+    b = int(lines[1].split(": ")[1])
+    c = int(lines[2].split(": ")[1])
     program = list(map(int, lines[4].split(": ")[1].split(",")))
 
-    get_value = lambda x: x if x <= 3 else (A if x == 4 else B if x == 5 else C)
+    get_value = lambda x: x if x <= 3 else (a if x == 4 else b if x == 5 else c)
 
     ip = 0
     output = []
@@ -12,27 +12,27 @@ def part_1(lines):
     while ip < len(program):
         opcode, operand = program[ip], program[ip + 1]
         if opcode == 0:
-            A //= 2 ** get_value(operand)
+            a //= 2 ** get_value(operand)
         elif opcode == 1:
-            B ^= operand
+            b ^= operand
         elif opcode == 2:
-            B = get_value(operand) % 8
+            b = get_value(operand) % 8
         elif opcode == 3:
-            ip = operand if A != 0 else ip + 2
+            ip = operand if a != 0 else ip + 2
         elif opcode == 4:
-            B ^= C
+            b ^= c
         elif opcode == 5:
             output.append(get_value(operand) % 8)
         elif opcode == 6:
-            B = A // 2 ** get_value(operand)
+            b = a // 2 ** get_value(operand)
         elif opcode == 7:
-            C = A // 2 ** get_value(operand)
-        ip += 2 if opcode != 3 or A == 0 else 0
+            c = a // 2 ** get_value(operand)
+        ip += 2 if opcode != 3 or a == 0 else 0
 
     return ",".join(map(str, output))
 
 
-def part_2(lines):
+def part_2():
     program = list(map(int, lines[4].split(": ")[1].split(",")))
 
     def solve(pointer, result):
@@ -40,7 +40,7 @@ def part_2(lines):
             return result
 
         for d in range(8):
-            A, B, C = result << 3 | d, 0, 0
+            a, b, c = result << 3 | d, 0, 0
             output_value = None
             ip = 0
 
@@ -51,30 +51,30 @@ def part_2(lines):
                 if operand <= 3:
                     value = operand
                 elif operand == 4:
-                    value = A
+                    value = a
                 elif operand == 5:
-                    value = B
+                    value = b
                 elif operand == 6:
-                    value = C
+                    value = c
 
                 if opcode == 0:
-                    A //= 2 ** value
+                    a //= 2 ** value
                 elif opcode == 1:
-                    B ^= operand
+                    b ^= operand
                 elif opcode == 2:
-                    B = value % 8
+                    b = value % 8
                 elif opcode == 3:
-                    ip = operand if A != 0 else ip + 2
+                    ip = operand if a != 0 else ip + 2
                     continue
                 elif opcode == 4:
-                    B ^= C
+                    b ^= c
                 elif opcode == 5:
                     output_value = value % 8
                     break
                 elif opcode == 6:
-                    B = A // 2 ** value
+                    b = a // 2 ** value
                 elif opcode == 7:
-                    C = A // 2 ** value
+                    c = a // 2 ** value
 
                 ip += 2
 
@@ -96,10 +96,10 @@ if __name__ == "__main__":
     with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
         lines = f.read().splitlines()
 
-    result_1 = part_1(lines)
-    result_2 = part_2(lines)
-
-    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}"
-    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}"
+    result_1 = part_1()
+    result_2 = part_2()
 
     print(f"{result_1},{result_2}")
+
+    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}, the answer is {'too low' if result_1 < EXPECTED[0] else 'too high'}"
+    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}, the answer is {'too low' if result_2 < EXPECTED[1] else 'too high'}"

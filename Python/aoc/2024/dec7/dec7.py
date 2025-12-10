@@ -1,4 +1,4 @@
-def part_1(equations):
+def part_1():
     total_sum = 0
 
     for wanted, numbers in equations:
@@ -26,7 +26,7 @@ def part_1(equations):
     return total_sum
 
 
-def part_2(equations):
+def part_2():
     total_sum = 0
 
     for wanted, numbers in equations:
@@ -72,10 +72,10 @@ if __name__ == "__main__":
             l, r = line.strip().split(": ")
             equations.append((int(l), list(map(int, r.split()))))
 
-    result_1 = part_1(equations)
-    result_2 = part_2(equations)
-
-    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}"
-    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}"
+    result_1 = part_1()
+    result_2 = part_2()
 
     print(f"{result_1},{result_2}")
+
+    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}, the answer is {'too low' if result_1 < EXPECTED[0] else 'too high'}"
+    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}, the answer is {'too low' if result_2 < EXPECTED[1] else 'too high'}"

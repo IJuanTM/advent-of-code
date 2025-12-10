@@ -1,4 +1,4 @@
-def part_1(lines):
+def part_1():
     a, b = len(lines), len(lines[0])
     graph = {i + j * 1j: c for i, r in enumerate(lines) for j, c in enumerate(r)}
 
@@ -38,7 +38,7 @@ def part_1(lines):
     return total
 
 
-def part_2(lines):
+def part_2():
     a, b = len(lines), len(lines[0])
     graph = {i + j * 1j: c for i, r in enumerate(lines) for j, c in enumerate(r)}
 
@@ -56,10 +56,10 @@ def part_2(lines):
             area, perimeter, sides = 0, 0, 0
 
             while stack:
-                current, dir = stack.pop()
+                current, direction = stack.pop()
 
                 if graph[current] != graph[node]:
-                    if graph[current + dir * 1j] == graph[node] or graph[current - dir + dir * 1j] != graph[node]:
+                    if graph[current + direction * 1j] == graph[node] or graph[current - direction + direction * 1j] != graph[node]:
                         perimeter += 1
                         sides += 1
                     else:
@@ -88,10 +88,10 @@ if __name__ == "__main__":
     with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
         lines = f.read().strip().split("\n")
 
-    result_1 = part_1(lines)
-    result_2 = part_2(lines)
-
-    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}"
-    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}"
+    result_1 = part_1()
+    result_2 = part_2()
 
     print(f"{result_1},{result_2}")
+
+    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}, the answer is {'too low' if result_1 < EXPECTED[0] else 'too high'}"
+    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}, the answer is {'too low' if result_2 < EXPECTED[1] else 'too high'}"

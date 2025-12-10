@@ -1,5 +1,6 @@
 def move(grid_dict, p, d):
     p += d
+
     if all([
         grid_dict[p] != '[' or move(grid_dict, p + 1, d) and move(grid_dict, p, d),
         grid_dict[p] != ']' or move(grid_dict, p - 1, d) and move(grid_dict, p, d),
@@ -7,37 +8,39 @@ def move(grid_dict, p, d):
         grid_dict[p], grid_dict[p - d] = grid_dict[p - d], grid_dict[p]
         return True
 
+    return None
 
-def part_1(grid, moves):
+
+def part_1():
     cells = {i + j * 1j: c for j, r in enumerate(grid.split()) for i, c in enumerate(r)}
     pos, = [p for p in cells if cells[p] == '@']
 
     for m in moves.replace('\n', ''):
         direction = {'<': -1, '>': +1, '^': -1j, 'v': +1j}[m]
-        C = cells.copy()
+        c = cells.copy()
 
         if move(cells, pos, direction):
             pos += direction
         else:
-            cells = C
+            cells = c
 
     ans = sum(pos for pos in cells if cells[pos] in 'O[')
     return int(ans.real + ans.imag * 100)
 
 
-def part_2(grid, moves):
+def part_2():
     cells = grid.translate(str.maketrans({'#': '##', '.': '..', 'O': '[]', '@': '@.'}))
     cells = {i + j * 1j: c for j, r in enumerate(cells.split()) for i, c in enumerate(r)}
     pos, = [p for p in cells if cells[p] == '@']
 
     for m in moves.replace('\n', ''):
         direction = {'<': -1, '>': +1, '^': -1j, 'v': +1j}[m]
-        C = cells.copy()
+        c = cells.copy()
 
         if move(cells, pos, direction):
             pos += direction
         else:
-            cells = C
+            cells = c
 
     ans = sum(pos for pos in cells if cells[pos] in 'O[')
     return int(ans.real + ans.imag * 100)
@@ -51,10 +54,10 @@ if __name__ == "__main__":
     with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
         grid, moves = f.read().split('\n\n')
 
-    result_1 = part_1(grid, moves)
-    result_2 = part_2(grid, moves)
-
-    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}"
-    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}"
+    result_1 = part_1()
+    result_2 = part_2()
 
     print(f"{result_1},{result_2}")
+
+    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}, the answer is {'too low' if result_1 < EXPECTED[0] else 'too high'}"
+    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}, the answer is {'too low' if result_2 < EXPECTED[1] else 'too high'}"

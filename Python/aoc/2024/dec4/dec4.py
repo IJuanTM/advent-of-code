@@ -1,4 +1,4 @@
-def part_1(data):
+def part_1():
     count = 0
     target = "XMAS"
 
@@ -13,7 +13,7 @@ def part_1(data):
     return count
 
 
-def part_2(data):
+def part_2():
     count = 0
 
     for i in range(len(data) - 2):
@@ -32,10 +32,10 @@ if __name__ == "__main__":
     with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
         data = [list(line.strip()) for line in f]
 
-    result_1 = part_1(data)
-    result_2 = part_2(data)
-
-    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}"
-    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}"
+    result_1 = part_1()
+    result_2 = part_2()
 
     print(f"{result_1},{result_2}")
+
+    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}, the answer is {'too low' if result_1 < EXPECTED[0] else 'too high'}"
+    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}, the answer is {'too low' if result_2 < EXPECTED[1] else 'too high'}"

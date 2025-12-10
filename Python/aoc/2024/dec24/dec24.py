@@ -3,7 +3,7 @@ from operator import and_, or_, xor
 AND, OR, XOR = and_, or_, xor
 
 
-def part_1(lines):
+def part_1():
     for line in lines:
         parts = line.split()
 
@@ -16,12 +16,12 @@ def part_1(lines):
     return sum(eval(f'z{i:02}() << {i}') for i in range(46))
 
 
-def part_2(lines):
-    lines = [l.split() for l in lines if '->' in l]
+def part_2():
+    new_lines = [l.split() for l in lines if '->' in l]
 
-    r = lambda c, y: any(y == x and c in (a, b) for a, x, b, _, _ in lines)
+    r = lambda c, y: any(y == x and c in (a, b) for a, x, b, _, _ in new_lines)
 
-    result = sorted(c for a, x, b, _, c in lines if
+    result = sorted(c for a, x, b, _, c in new_lines if
                     x == "XOR" and all(d[0] not in 'xyz' for d in (a, b, c)) or
                     x == "AND" and not "x00" in (a, b) and r(c, 'XOR') or
                     x == "XOR" and not "x00" in (a, b) and r(c, 'OR') or
@@ -38,10 +38,10 @@ if __name__ == "__main__":
     with open(os.path.join(os.path.dirname(__file__), 'input.txt')) as f:
         lines = f.readlines()
 
-    result_1 = part_1(lines)
-    result_2 = part_2(lines)
-
-    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}"
-    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}"
+    result_1 = part_1()
+    result_2 = part_2()
 
     print(f"{result_1},{result_2}")
+
+    assert result_1 == EXPECTED[0], f"Part 1 failed: expected {EXPECTED[0]}, got {result_1}, the answer is {'too low' if result_1 < EXPECTED[0] else 'too high'}"
+    assert result_2 == EXPECTED[1], f"Part 2 failed: expected {EXPECTED[1]}, got {result_2}, the answer is {'too low' if result_2 < EXPECTED[1] else 'too high'}"
