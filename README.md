@@ -10,4 +10,4 @@ I started in 2023 and will try to do them every year from now. I will probaly mo
 |------|-------|
 | 2023 | 50    |
 | 2024 | 50    |
-| 2025 | 2     |
+| 2025 | 18    |
